@@ -293,9 +293,20 @@
   a { color: var(--teal); }
 
   .section-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* ---------- Left sidebar TOC (screen only) ---------- */
+  @media screen {
+    ...
+  }
+  @media print {
+    .sidebar-toc { display: none; }
+  }
 </style>
 </head>
 <body>
+<nav class="sidebar-toc">
+  ...
+</nav>
 <div class="container">
 
 <div class="doc-title-block">
