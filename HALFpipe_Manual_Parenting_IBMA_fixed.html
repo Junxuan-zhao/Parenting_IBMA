@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>HALFpipe Task-Based fMRI Manual — Parenting IBMA</title>
+
+<style>
+  :root{
+    --ink:#1b2430;
+    --sub:#5b6675;
+    --line:#e3e7ee;
+    --accent:#3a5a9b;
+    --accent-dark:#1f3a6e;
+    --bg:#fbfbfd;
+    --panel:#f4f6fa;
+    --note-bg:#eef2fb;
+    --note-border:#b9c8ea;
+    --code-bg:#1e2530;
+    --code-ink:#e8ecf4;
+    --table-head:#e7ecf7;
+    --sidebar-w:280px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Source Sans Pro","Segoe UI",Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    font-size:16.5px;
+  }
+  a{color:var(--accent-dark);}
+  a:hover{color:var(--accent);}
+
+  /* ---- layout ---- */
+  .shell{display:flex; min-height:100vh;}
+  nav.sidebar{
+    width:var(--sidebar-w);
+    flex-shrink:0;
+    background:#0f1a2e;
+    color:#c9d3e6;
+    padding:28px 22px 40px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+  }
+  nav.sidebar .brand{
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#7d93c2;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  nav.sidebar .title{
+    font-size:19px;
+    font-weight:700;
+    color:#fff;
+    line-height:1.3;
+    margin-bottom:22px;
+  }
+  nav.sidebar a{
+    display:block;
+    color:#c9d3e6;
+    text-decoration:none;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:14.5px;
+    margin-bottom:2px;
+  }
+  nav.sidebar a.lvl2{
+    padding-left:22px;
+    font-size:13.5px;
+    color:#95a4c2;
+  }
+  nav.sidebar a:hover{background:#1c2c4a; color:#fff;}
+  nav.sidebar .divider{
+    border-top:1px solid #223055;
+    margin:16px 0;
+  }
+
+  main{
+    flex:1;
+    max-width:880px;
+    padding:56px 64px 120px;
+  }
+
+  /* ---- cover ---- */
+  .cover-eyebrow{
+    font-size:13px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  h1.cover-title{
+    font-size:40px;
+    line-height:1.15;
+    margin:0 0 14px;
+    color:var(--ink);
+    font-weight:800;
+  }
+  .cover-sub{
+    font-size:19px;
+    color:var(--sub);
+    font-style:italic;
+    margin-bottom:28px;
+    max-width:640px;
+  }
+  .cover-box{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px 24px;
+    margin-bottom:14px;
+  }
+  .cover-box p{margin:0 0 10px;}
+  .cover-box p:last-child{margin-bottom:0;}
+
+  /* ---- headings ---- */
+  h1{
+    font-size:29px;
+    color:var(--accent-dark);
+    border-bottom:2px solid var(--line);
+    padding-bottom:10px;
+    margin:56px 0 20px;
+    scroll-margin-top:24px;
+  }
+  section:first-of-type h1{margin-top:0;}
+  h2{
+    font-size:21px;
+    color:var(--accent-dark);
+    margin:34px 0 14px;
+    scroll-margin-top:24px;
+  }
+  h3{
+    font-size:16.5px;
+    color:var(--ink);
+    font-style:italic;
+    margin:22px 0 8px;
+    scroll-margin-top:24px;
+  }
+  p{margin:0 0 14px;}
+
+  /* ---- lists ---- */
+  ul, ol{margin:0 0 16px; padding-left:26px;}
+  li{margin-bottom:8px;}
+  ul ul, ol ul{margin-top:8px;}
+
+  /* ---- callouts ---- */
+  .note{
+    background:var(--note-bg);
+    border-left:4px solid var(--note-border);
+    border-radius:6px;
+    padding:14px 18px;
+    margin:16px 0 22px;
+    font-size:15px;
+    font-style:italic;
+    color:#2c3b5a;
+  }
+  .note strong{font-style:normal;}
+
+  /* ---- tables ---- */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:14px 0 24px;
+    font-size:14.5px;
+  }
+  caption{
+    text-align:left;
+    font-size:13px;
+    color:var(--sub);
+    margin-bottom:6px;
+  }
+  th, td{
+    border:1px solid var(--line);
+    padding:10px 12px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:700;
+    color:var(--accent-dark);
+  }
+  tr:nth-child(even) td{background:#fafbfd;}
+
+  /* ---- code ---- */
+  pre{
+    background:var(--code-bg);
+    color:var(--code-ink);
+    padding:16px 18px;
+    border-radius:8px;
+    overflow-x:auto;
+    font-size:13.5px;
+    line-height:1.55;
+    margin:14px 0 22px;
+  }
+  code{
+    font-family:"SF Mono",Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  p code, li code, td code{
+    background:#eef1f7;
+    color:#1f3a6e;
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:.92em;
+  }
+
+  .toc-inline{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px 28px;
+    margin:30px 0 10px;
+  }
+  .toc-inline h2{margin-top:0;}
+  .toc-inline ol{padding-left:20px;}
+  .toc-inline a{text-decoration:none;}
+
+  .backtotop{
+    display:inline-block;
+    font-size:13px;
+    color:var(--sub);
+    text-decoration:none;
+    margin-top:8px;
+  }
+
+  footer{
+    max-width:880px;
+    margin:0 64px 60px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    color:var(--sub);
+    font-size:13.5px;
+  }
+
+  @media (max-width: 900px){
+    .shell{flex-direction:column;}
+    nav.sidebar{
+      width:100%;
+      height:auto;
+      position:relative;
+      padding:20px;
+    }
+    main{padding:36px 22px 80px;}
+    footer{margin:0 22px 60px;}
+  }
+
+  @media print{
+    nav.sidebar{display:none;}
+    main{max-width:100%; padding:0;}
+    a{color:inherit; text-decoration:none;}
+  }
+</style></head><body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="brand">Parenting IBMA Consortium</div>
+    <div class="title">HALFpipe Task-Based fMRI Manual</div>
+
+    <a href="#about">0. About This Manual</a>
+    <a href="#prepare">1. Prepare for Data Analysis</a>
+    <a href="#prepare-11" class="lvl2">1.1 Hardware &amp; Software</a>
+    <a href="#prepare-12" class="lvl2">1.2 Files Needed Per Subject</a>
+    <a href="#prepare-14" class="lvl2">1.3 Defining Your Task Contrast</a>
+    <a href="#prepare-15" class="lvl2">1.4 High-Pass Filter Width</a>
+    <a href="#install">2. Install a Container Platform</a>
+    <a href="#download">3. Download HALFpipe</a>
+    <a href="#workdir">4. Set Up Working Directory</a>
+    <a href="#run">5. Run Preprocessing &amp; Feature Extraction</a>
+    <a href="#run-51" class="lvl2">5.1 Launching HALFpipe</a>
+    <a href="#run-52" class="lvl2">5.2 Data Questions</a>
+    <a href="#run-53" class="lvl2">5.3 Confound-Regression Variations</a>
+    <a href="#run-54" class="lvl2">5.4 Group-Level Model(s)</a>
+    <a href="#run-55" class="lvl2">5.5 Edge Cases</a>
+    <a href="#check">6. Check &amp; Re-Run</a>
+    <a href="#qc">7. Quality Assessment</a> <a href="#group">8. Group-level Analysis</a> <a href="#9">9. Submitting Results for the IBMA</a> <a href="#10">10. Data Transfer</a>
+
+    <div class="divider"></div>
+    <a href="https://fmri.science/halfpipe/about.html" target="_blank" rel="noopener">HALFpipe site ↗</a>
+    <a href="https://fmri.science/halfpipe/quality-control.html" target="_blank" rel="noopener">QC guide ↗</a>
+  </nav>
+
+  <main>
+
+    <!-- ================= COVER ================= -->
+    <div class="cover-eyebrow">Parenting-IBMA<br>
+</div>
+    <h1 class="cover-title">HALFpipe Task-Based fMRI Analysis Manual</h1>
+    <p class="cover-sub">Image-Based Meta-Analysis of Parenting Constructs and Emotion-Processing Brain Activity</p>
+
+    <div class="cover-box">
+      <p>Written by Junxuan Zhao .....<br>
+</p>
+<p>Adapted for the Parenting-IBMA project from the ENIGMA Task-Based
+fMRI Imaging Manual by Lea Waller, Susanne Erk, Henrik Walter, and Ilya
+Veer<meta charset="utf-8">; the ENIGMA resting-state fMRI manual by
+Pozzi, Toenders, Veer, Waller, Haswell, Morey &amp; Schmaal; and from
+the official HALFpipe documentation at <a href="https://fmri.science/halfpipe/" target="_blank" rel="noopener">fmri.science/halfpipe</a> (About, Installation, and Manuals pages).</p>
+
+      <p><strong>This manual assumes HALFpipe v1.3.2.</strong>
+Site-specific parenting-construct mappings, task contrasts, and
+analysis models referenced throughout are defined in your site's <em>Site Confirmation Packet</em> (Parenting Construct and fMRI Harmonization).</p>
+      <p>Please address questions regarding Parenting-IBMA to <span style="color: rgb(51, 51, 255);">junxuan@student.unimelb.edu.au</span>.<br>
+Please address questions and comments regarding HALFpipe to <span style="color: rgb(51, 51, 255);">enigma@charite.de</span>.<br>
+</p>
+    </div>
+
+    <!-- ================= 0. ABOUT ================= -->
+    <section id="about"><h1>0. About This Manual</h1>
+      <p>This
+manual walks each of the contributing sites in the Parenting-IBMA
+project through running HALFpipe on their local task-fMRI data, from
+data preparation through to the group-level summary statistics maps
+that will be pooled across sites for the image-based meta-analysis
+(IBMA).</p>
+      
+      <ul>
+        <li>The functional contrast at
+each site is an emotional-processing contrast (emotional
+stimuli/condition vs. a neutral or control condition), but the exact
+task, conditions, and contrast direction differ by site. These are
+documented per-site in your Site Confirmation Packet under <span style="font-style: italic; text-decoration: underline;">fMRI Task Contrast</span>.</li>
+        <li>The
+group-level model covariates are the 6 harmonized parenting constructs
+(Warmth/Responsiveness, Positive Reinforcement, Behavioral
+Control/Monitoring, Inconsistent Discipline, Psychological Control,
+Harsh/Reactive Control), which of these apply to your site, and which
+of your subscales map onto them, is documented per-site in your Site
+Confirmation Packet under <span style="font-style: italic; text-decoration: underline;">Parenting Constructs and Analysis Models</span>.</li>
+      </ul>
+      
+    
+
+    <!-- ================= 1. PREPARE ================= -->
+    </section>
+    <section id="prepare"><h1>1. Prepare for Data Analysis</h1>
+
+      <h2 id="prepare-11">1.1 Hardware and Software Prerequisites</h2>
+      <ul>
+        <li>A computer with at least 8 GB of RAM.</li>
+        <li>At
+least ~0.6 – 1 GB of free disk space per subject for intermediate
+files, plus ~5.3 GB for the HALFpipe Singularity/Apptainer image (or
+~23 GB if using Docker) and~500 MB for a working directory for one
+subject, one task, and one session.<br>
+</li>
+        <li>Multiple CPU cores will speed up processing but are not required.</li>
+        <li>Running on a high-performance compute cluster (HPC) is recommended for larger sites and is faster/more resource-efficient.</li>
+        <li>A FreeSurfer license file needs to be located in the working directory.</li>
+      </ul>
+
+      <h2 id="prepare-12">1.2 Files Needed Per Subject</h2>
+      <ol>
+        <li>Raw (non-skull-stripped) 3D T1-weighted anatomical image, <code>.nii</code> or <code>.nii.gz</code>. De-faced images work out of the box; if only skull-stripped anatomicals are available, see the note in step 5.5 below.</li>
+        <li>Raw 4D functional (task) image, <code>.nii</code> or <code>.nii.gz</code>, for your site's emotion-processing task (see your Site Confirmation Packet, <span style="font-style: italic; text-decoration: underline;">fMRI Task Contrast</span>, for the task name and condition list).</li>
+        <li>Field
+map images, if available (Siemens phase/magnitude pairs, Philips
+field-map + magnitude, or blip-up/blip-down AP/PA pairs), with their
+acquisition metadata (echo spacing, echo times, etc.).</li>
+        <li>Event files with the onset and duration of every condition of your task, in SPM MAT, FSL 3-column, or BIDS TSV format.&nbsp;
+          <div class="note">Make
+sure event onsets are aligned to the acquisition of the first retained
+volume of your task run, especially if you discard initial volumes (see
+step 5.2, item 4).</div>
+        </li>
+        <li>A group-level covariate spreadsheet (CSV, TSV, or XLSX) with one row per subject and the following columns:
+          <ul>
+            <li>ID - identical to the subject IDs used in your image file names.</li>
+            <li>Age (years).</li>
+            <li>Sex.</li>
+            
+            <li>Your site's harmonized parenting construct score(s), using the exact subscale(s) confirmed in your <span style="font-style: italic; text-decoration: underline;">Site Confirmation Packet</span>
+(e.g., PBI-Care for Warmth/Responsiveness, APQ-Inconsistent Discipline,
+MAPS Physical Control for Harsh/Reactive Control, etc.). Only include
+the constructs your site actually contributes.</li>
+            <li>Any
+optional secondary-analysis covariates your site is using
+(race/ethnicity, parental education, SES, etc. See your study proposal
+and the <span style="font-style: italic; text-decoration: underline;">Secondary analysis </span>row of your Site Confirmation Packet model table).</li>
+          </ul>
+        </li>
+      </ol><h2 id="prepare-14">1.3 Defining Your Task Contrast</h2>
+      <p>Every
+site in the Parenting IBMA project is contrasting an emotional
+condition against a neutral/control condition, but the specific
+conditions differ by task. Using your Site Confirmation Packet's <span style="font-style: italic; text-decoration: underline;">fMRI Task Contrast</span> row for your site as a reference:</p>
+      <ol>
+        <li>Note
+the exact condition names in your event files that make up the
+“emotional” side of the contrast (e.g., angry/fearful/sad faces,
+negative images, “observe affect,” etc.) and the condition(s) that make
+up the neutral/control side (e.g., neutral faces, shapes,
+rest/baseline).</li>
+        <li>Assign +1 to each emotional condition
+and −1 to each neutral/control condition, with 0 for any other
+conditions that are modeled but not included in the contrast. For the
+reverse contrast, assign −1 to each emotional condition and +1 to each
+neutral/control condition.</li>
+        <li>Adjust the integers as needed so the contrast sums to zero — e.g., two conditions on one side and one on the other becomes <code>[1 1 −2]</code>.</li>
+      </ol>
+      <div class="note">If you're unsure how to set up your contrast vector, contact the coordinating site before running HALFpipe.</div>
+
+      <h2 id="prepare-15">1.4 Calculating Your High-Pass Filter Width</h2>
+      <p>For
+each task condition, calculate the time difference in seconds between
+the onset of one event/block and the next onset of that same condition.
+Take the maximum difference across all conditions and all subjects, and
+multiply by 1.5. If the result is smaller than 125 s, use 125 s as your
+high-pass filter width; otherwise use the calculated value.</p>
+      <div class="note">Example:
+a block design with a 30 s experimental block alternating with a 30 s
+control block has a 60 s onset-to-onset interval. 60 × 1.5 = 90 s,
+which is below 125 s, so the filter width is 125 s. If some conditions
+are performance-dependent (and so vary in timing across subjects), use
+the maximum value observed anywhere in your sample.</div>
+    
+
+    <!-- ================= 2. INSTALL ================= -->
+    </section>
+    <section id="install"><h1>2. Install a Container Platform</h1>
+      <p>This step is only needed once per machine.</p>
+      <ol>
+        <li>Open a terminal (on Windows, use Docker Desktop's terminal).</li>
+        <li>Type <code>apptainer</code> or <code>singularity</code>
+and press enter. If you get usage instructions rather than “command not
+found,” you already have a container platform - skip to Section 3.</li>
+        <li>Only if running on an HPC: try <code>module load singularity</code> (or <code>apptainer</code>) to load it as an optional module. You will need to re-run this every time you log back in or start a new node.</li>
+        <li>Choose a platform for your system:</li>
+      </ol>
+      <table>
+        <thead><tr><th>Platform</th><th>Where to use it</th><th>How to install</th></tr></thead>
+        <tbody>
+          <tr><td>Docker Desktop</td><td>Mac / Windows</td><td>Install from docker.com/products/docker-desktop</td></tr>
+          <tr><td>Apptainer</td><td>Linux workstation or HPC (preferred on newer systems)</td><td><code>sudo apt install -y apptainer</code>, or see the sylabs.io install guide</td></tr>
+          <tr><td>Singularity 3.x</td><td>Linux workstation or HPC</td><td>Follow the Singularity 3.x <a href="https://sylabs.io/guides/3.5/user-guide/quick_start.html">Quick Start guide</a></td></tr>
+          <tr><td>Singularity 2.x</td><td>Older HPC clusters</td><td><code>sudo apt install singularity-container</code></td></tr>
+        </tbody>
+      </table>
+      <ol start="5">
+        <li>After installing (or loading the module), re-run the command from step 2 to confirm it works.</li>
+      </ol>
+    
+
+    <!-- ================= 3. DOWNLOAD ================= -->
+    </section>
+    <section id="download"><h1>3. Download HALFpipe</h1>
+      <p>The Parenting IBMA project uses HALFpipe v1.3.2 (the last release cycle). Check <a href="https://github.com/halfpipe/halfpipe">the HALFpipe About page</a> for the current recommended version before you start, since the container is updated periodically.</p>
+      <table>
+        <thead><tr><th>Platform</th><th>Command</th></tr></thead>
+        <tbody>
+          <tr><td>Apptainer / Singularity 3.x</td><td><code>curl -O https://download.fmri.science/singularity/halfpipe-1.3.2.sif</code></td></tr>
+          <tr><td>Singularity 2.x</td><td><code>curl -O https://download.fmri.science/singularity/halfpipe-1.3.2.simg</code></td></tr>
+          <tr><td>Docker Desktop</td><td><code>docker pull --platform linux/amd64 halfpipe/halfpipe:1.3.2</code></td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>If using Apptainer/Singularity: run <code>find $(pwd) -maxdepth 1</code> to confirm the .sif/.simg file downloaded, and note its full path. You'll need it in Section 4.</li>
+        <li>If using Docker: no file path is needed: Docker stores the image internally.</li>
+        
+      </ul>
+    
+
+    <!-- ================= 4. WORKDIR ================= -->
+    </section>
+    <section id="workdir"><h1>4. Set Up Your Working Directory</h1>
+      <ol>
+        <li>Create an empty base directory with enough free disk space (see Section 1.1), e.g. <code>cd path/to/your_working_sapce</code>; <code>mkdir parenting_ibma</code>.</li>
+        <li>Create a working directory inside it for HALFpipe's outputs, e.g. <code>mkdir working_dir</code>.</li>
+        <li>Place a copy of your FreeSurfer license file (<code>license.txt</code>) inside the working directory.</li>
+      </ol>
+      <div class="note">Run
+HALFpipe once per cohort/site. If your site has more than one scanner
+or sub-cohort with materially different acquisition parameters (e.g.,
+different TRs), use a separate working directory for each.</div>
+    
+
+    <!-- ================= 5. RUN ================= -->
+    </section>
+    <section id="run"><h1>5. Run Preprocessing and Feature Extraction</h1>
+
+      <h2 id="run-51">5.1 Launching HALFpipe</h2>
+      <p>Only
+if running on an HPC: request an interactive job before launching (ask
+your HPC admins/IT for the exact syntax if these examples don't match
+your cluster):</p>
+      <table>
+        <tbody>
+          <tr><th>SLURM</th><td><code>srun --time 0-6 --ntasks=1 --pty bash</code></td></tr>
+          <tr><th>SGE</th><td><code>qlogin -now no</code></td></tr>
+          <tr><th>Torque / PBS</th><td><code>qsub -I -l walltime=12:00:00</code></td></tr>
+        </tbody>
+      </table>
+      <p>Start the container:</p>
+      <table>
+        <thead><tr><th>Context</th><th>Command</th></tr></thead>
+        <tbody>
+          <tr><td>Apptainer/Singularity, HPC</td><td><code>apptainer run --contain --cleanenv --bind /:/ext halfpipe-1.3.2.sif --use-cluster</code></td></tr>
+          <tr><td>Apptainer/Singularity, local machine</td><td><code>apptainer run --contain --cleanenv --bind /:/ext halfpipe-1.3.2.sif --subject-chunks --nipype-n-procs 1 --keep none</code></td></tr>
+          <tr><td>Docker, local machine (Mac)</td><td><code>docker run --interactive --tty --volume /:/ext halfpipe/halfpipe:1.3.2 --subject-chunks --nipype-n-procs 1 --keep none</code></td></tr>
+        </tbody>
+      </table>
+      
+
+      <h2 id="run-52">5.2 Data Questions</h2>
+      <p>HALFpipe will now open an interactive text UI and ask a series of questions; use Ctrl-C at any point to go back a step.</p>
+      <ol>
+        <li>Specify working directory (the folder created in Section 4).</li>
+        <li>Is the data available in BIDS format?
+          <ul>
+            <li>Yes → enter the path to your BIDS directory and continue to step 6.</li>
+            <li>No → continue with the sub-steps below.</li>
+          </ul>
+        </li>
+        <li>Specify the path of the T1-weighted image files, using the <code>{subject}</code> tag in place of the subject ID (e.g. <code>/path/to/T1/{subject}/T1.nii.gz</code>). <code>*</code> and <code>?</code> wildcards can stand in for dates or run counters. HALFpipe will report how many files/subjects it found.</li>
+        <li>Specify the path of the BOLD image files the same way, using <code>{subject}</code> (and <code>{task}</code> if you have more than one task).</li>
+        <li>Check
+that the repetition time (TR) values shown are correct for your data. A
+TR of 1 s is sometimes mis-set in headers created by concatenating 3D
+volumes, correct this manually if so.</li>
+        <li>Add more BOLD
+image files? Say Yes if you need to add data with a different folder
+structure or metadata (e.g. a different TR), otherwise No.</li>
+        <li>Do
+slice timing? Yes if you have the acquisition's slice-timing details
+(check with your MR physicist/technician if unsure); confirm or correct
+the detected slice order and timing values. Otherwise No.</li>
+        <li>Remove initial volumes from scans? Enter 0 unless your data needs equilibration volumes discarded.</li>
+        <li>Specify
+field maps? Yes if you acquired them (you'll be asked for their type,
+file names, and acquisition parameters); this step is skipped
+automatically for BIDS input. Otherwise No.</li>
+        <li>Specify first-level features? Select Yes.</li>
+      </ol>
+
+      <h2 id="run-53">5.3 First-Level (Task) Feature — Three Confound-Regression Variations</h2>
+      <p>Write
+down the name of your site's task (see your Site Confirmation Packet).
+For each task, you will loop through the feature-specification steps
+below three times, changing only the confound-regression setting each
+time, so that downstream analyses can confirm results are not an
+artifact of the confound strategy. Give each repetition a distinct
+feature name, e.g. <code>facesVar1</code>, <code>facesVar2</code>, <code>facesVar3</code>.</p>
+      <table>
+        <thead><tr><th>Prompt</th><th>Variation 1</th><th>Variation 2</th><th>Variation 3</th></tr></thead>
+        <tbody>
+          <tr><td>Feature type</td><td>Task-based</td><td>Task-based</td><td>Task-based</td></tr>
+          <tr><td>Feature name</td><td><code>{task}_var1</code></td><td><code>{task}_var2</code></td><td><code>{task}_var3</code></td></tr>
+          <tr><td>Images to use</td><td>Select only this task's functional runs</td><td>(same)</td><td>(same)</td></tr>
+          <tr><td>Event file type / conditions</td><td>Enter the event file paths (use <code>{condition}</code> for FSL 3-column files); add every condition listed for your task in the Site Confirmation Packet</td><td>(same, once set up)</td><td>(same)</td></tr>
+          <tr><td>Contrasts</td><td>Enter your contrast vector from Section 1.3, mapped to the correct conditions</td><td>(same)</td><td>(same)</td></tr>
+          <tr><td>Temporal filter (design matrix)</td><td>Enter the high-pass width from Section 1.4</td><td>(same)</td><td>(same)</td></tr>
+          <tr><td>Smoothing</td><td>Yes, FWHM = 6 mm</td><td>(same)</td><td>(same)</td></tr>
+          <tr><td>Temporal filter (image data)</td><td>Same high-pass width as above; skip low-pass</td><td>(same)</td><td>(same)</td></tr>
+          <tr><td>Remove confounds?</td><td>ICA-AROMA only</td><td>Motion parameters (deselect ICA-AROMA)</td><td>Deselect everything — no confound regression</td></tr>
+          <tr><td>Add another feature?</td><td>Yes</td><td>Yes</td><td>No (once all 3 variations × all tasks are done)</td></tr>
+        </tbody>
+      </table>
+      <div class="note">When
+you switch confound settings between variations, HALFpipe will ask “Do
+you really want to use inconsistent confounds across features?” —
+answer Yes; this confirmation only needs to be given once.</div>
+      <p>Output
+a preprocessed image? Select No (or Yes only if you separately plan to
+reuse the preprocessed image for another project. This doesn't affect
+the current analysis, but it does make outputs larger).</p>
+
+      <h2 id="run-54">5.4 Group-Level Model(s)</h2>
+      <p>Your
+Site Confirmation Packet lists up to three model families per parenting
+construct you contribute: Primary models, Moderation models, and
+Secondary models. Set up one HALFpipe group-level model per row you
+intend to run. For each:</p>
+      <table>
+        <thead><tr><th>Prompt</th><th>What to enter</th></tr></thead>
+        <tbody>
+          <tr><td>Specify group-level model?</td><td>Yes</td></tr>
+          <tr><td>Specify model type</td><td>Linear model</td></tr>
+          <tr><td>Specify model name</td><td>Something identifiable, e.g. <code>warmth_primary</code>, <code>harsh_moderation</code></td></tr>
+          <tr><td>Aggregate scan-level statistics before analysis? (multi-run tasks only)</td><td>Select the run/acquisition/session tags with the star [*]</td></tr>
+          <tr><td>Path of the covariates/group data spreadsheet</td><td>Path to the spreadsheet from Section 1.2, step 5</td></tr>
+          <tr><td>Column containing subject names</td><td>Your ID column</td></tr>
+          <tr><td>Column data types</td><td>Set each column's type correctly (e.g., numeric for Age/construct scores, categorical for Biological Sex)</td></tr>
+          <tr><td>Subjects to use</td><td>All (star [*]) — deselect only if you're intentionally excluding a sub-group</td></tr>
+          <tr><td>Exclude subjects based on movement?</td><td>Yes, confirm the default settings</td></tr>
+          <tr><td>Variables to add to the model</td><td>Age, Sex, and the parenting construct(s) for this model row (e.g. Warmth for a Warmth model)<br>
+</td></tr>
+          <tr><td>Action for missing values</td><td>Listwise deletion for all (default)</td></tr>
+          <tr><td>Additional contrasts for categorical variables?</td><td>No</td></tr>
+          <tr><td>Interaction terms?</td><td>No
+for Primary/Secondary models. For a Moderation model, Yes - add the
+Construct × Sex (or Construct × Age, per your packet row) interaction
+listed for that model</td></tr>
+          <tr><td>Add another group-level model?</td><td>Yes if you have more model rows to set up (from your packet), otherwise No</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Secondary-analysis
+models add optional covariates (race/ethnicity, parental education,
+SES, etc.) on top of the Primary model. See your study proposal and the
+<span style="text-decoration: underline;">Secondary analysis row </span>of your Site Confirmation Packet for exactly which covariates apply to your site.</div>
+
+      <h2 id="run-55">5.5 Edge Cases</h2>
+      <h3>If your only anatomical images are already skull-stripped</h3>
+      <p>Press Ctrl-C to stop the program before it finishes generating commands. Open <code>spec.json</code> in the working directory in a text editor, find <code>"skull_strip_algorithm": "ants"</code>, change <code>"ants"</code> to <code>"none"</code>,
+and save. Restart HALFpipe, select the same working directory, and
+choose Run without modification when it detects the existing spec file.</p>
+      <h3>If running on an HPC</h3>
+      <p>HALFpipe will generate and validate the commands to run (this can take a few hours for large samples). Once done, it writes <code>submit.slurm.sh</code>, <code>submit.pbs.sh</code>, or <code>submit.sge.sh</code>
+to the working directory. Open this script and compare the header lines
+against an example from your HPC's documentation — add any missing
+directives (e.g., partition/queue name) — then submit it:</p>
+      <table>
+        <tbody>
+          <tr><th>SLURM</th><td><code>sbatch submit.slurm.sh</code></td></tr>
+          <tr><th>SGE</th><td><code>qsub submit.sge.sh</code></td></tr>
+          <tr><th>Torque/PBS</th><td><code>qsub submit.torque.sh</code></td></tr>
+        </tbody>
+      </table>
+      <p>Otherwise, HALFpipe begins processing immediately once you finish answering the prompts.</p>As
+soon as you finish specifying all your data, features and models in the
+user interface, HALFpipe will now generate everything needed to run on
+the cluster. For hundreds of subjects, this can take up to a few hours.
+When HALFpipe exits, edit the generated submit script <code>submit.slurm.sh </code>according to your cluster’s documentation and then run it. This submit script will calculate everything except group statistics.<br>
+<!-- ================= 6. CHECK ================= -->
+    </section>
+    <section id="check"><h1>6. Check Pre-Processing and Re-Run If Necessary</h1>
+      <p>Open a terminal, navigate to your working directory, and run:</p>
+      <pre><code>for i in $(strings graphs.*.dat | grep features_wf | grep result_make_resultdicts_b.pklz | sed 's|^/ext||g'); do<br>  if [ ! -f ${i} ]; then<br>    echo ${i} | sed "s/^.*single_subject_\([A-Za-z0-9]*\)_wf.*$/\1/p";<br>  fi;<br>done | sort | uniq | tee subject-list.txt</code></pre>
+      <p>This prints any subjects that did not finish processing and writes their IDs to <code>subject-list.txt</code> in the working directory (you can also hand-edit this file, e.g. to add newly arrived participants).</p>
+      <ul>
+        <li>If not on HPC: re-run HALFpipe with the same command as before, adding <code>--subject-list &lt;full path to subject-list.txt&gt;</code> at the end, then select Run without modification.</li>
+        <li>If on HPC: add the same option to your submission script and resubmit.</li>
+        <li>You can also use <code>--subject-include &lt;characters&gt;</code> to (re-)run only subjects whose ID contains those characters.</li>
+      </ul>
+    
+
+    <!-- ================= 7. QC ================= -->
+    </section>
+    <section id="qc"><h1>7. Quality Assessment</h1>
+      <ul>
+        <li>If you ran on an HPC, copy the <code>reports</code> folder from your working directory to a machine where you can comfortably review it.</li>
+      </ul>
+      <p>Complete the QC ratings using the <a href="https://fmri.science/halfpipe/quality-control.html" target="_blank" rel="noopener">HALFpipe quality-control guide</a>.</p>
+      
+<ul>
+
+        <li>Contact the coordinating site if you're unsure about a
+particular image and can't resolve it with a local scanner
+technician/MR physicist.</li>
+        
+      
+</ul>
+
+    
+
+    
+    <!-- ================= 8. SUBMIT ================= -->
+    </section>
+    <section id="submit">
+    <h1><a name="group"></a>8. Group-level Analysis<br>
+</h1>
+<ul>
+  <li>After confucting QC, you can run group
+statistics. This is usually very fast, so you can do this in an
+interactive session. Run <code style="color: rgb(51, 51, 153);">singularity run --containall --bind /:/ext halfpipe-1.3.2.sif --only-model-chunk</code> and then select <code>Run without modification</code> in the user interface..
+    
+
+    </li>
+</ul>
+<!-- ================= 7. QC ================= --><!-- ================= 7. QC ================= -->
+<h1><a name="9"></a>9. Submitting Your Site's Results for the IBMA</h1>
+
+      <p>Once preprocessing, first-level modeling, and your group-level model(s) from Section 5.4 have completed and passed QC:</p>
+      <ol>
+        <li>Locate the group-level summary statistic (contrast) maps in the <code>grouplevel</code> folder of your working directory, one set per model you specified.</li>
+        <li>Package
+the summary maps together with a brief note specifying which
+subscale(s) you used for each construct (according to your confirmed
+Site Confirmation Packet mapping), the models you conducted in the
+HALFpipe pipeline, the sample size after QC, and demographic
+characteristics (e.g., mean age [M (SD)], biological sex (N), etc.).</li>
+  <li>Please also provide the name, educational degree, affiliation,
+address, and email address of the person/people who conducted the
+analysis and the project leader, as they will be included as co-authors
+on the manuscript.<br>
+  </li>
+
+        <li>Send these to the coordinating site for pooling into the
+meta-analysis, following the data-transfer method the coordinating team
+has specified for this project.</li>
+      </ol>
+<h1><a name="10"></a>10. Data Transfer</h1>
+TBC<br>
+
+<br>
+
+      
+      <a class="backtotop" href="#about">↑ Back to top</a>
+
+    </section>
+  </main>
+</div>
+
+<footer> Parenting-IBMA&nbsp; — HALFpipe Task-Based fMRI Manual.
+Adapted from the ENIGMA Task-Based fMRI Imaging Manual and the HALFpipe
+documentation at fmri.science/halfpipe.
+</footer>
+
+
+</body></html>
