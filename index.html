@@ -296,8 +296,47 @@
 
   /* ---------- Left sidebar TOC (screen only) ---------- */
   @media screen {
-    ...
+    .sidebar-toc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 230px;
+      height: 100vh;
+      overflow-y: auto;
+      background: #f7f9fb;
+      border-right: 1px solid var(--border);
+      padding: 24px 18px;
+      box-sizing: border-box;
+    }
+    .sidebar-toc .toc-title {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin: 0 0 12px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sidebar-toc a {
+      display: block;
+      padding: 5px 0;
+      font-size: 9pt;
+      color: var(--text);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      padding-left: 8px;
+    }
+    .sidebar-toc a:hover {
+      color: var(--teal);
+      border-left-color: var(--teal);
+    }
+    .container {
+      margin-left: 260px;
+      max-width: 760px;
+    }
+    /* hide the old inline contents box on screen since the sidebar replaces it */
+    .toc { display: none; }
   }
+
   @media print {
     .sidebar-toc { display: none; }
   }
@@ -305,7 +344,15 @@
 </head>
 <body>
 <nav class="sidebar-toc">
-  ...
+  <p class="toc-title">Contents</p>
+  <a href="#summary">Summary</a>
+  <a href="#step1">Step 1 — Prepare for Data Analysis</a>
+  <a href="#step2">Step 2 — Install a Container Platform</a>
+  <a href="#step3">Step 3 — Download &amp; Set Up Directory</a>
+  <a href="#step4">Step 4 — Preprocessing &amp; Features</a>
+  <a href="#step5">Step 5 — Quality Assessment</a>
+  <a href="#step6">Step 6 — Group-Level Analysis</a>
+  <a href="#step7">Step 7 — Upload Results</a>
 </nav>
 <div class="container">
 
